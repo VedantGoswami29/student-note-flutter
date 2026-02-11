@@ -16,6 +16,25 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 subprojects {
+
+    afterEvaluate {
+
+        if (project.hasProperty("android")) {
+
+            extensions.findByName("android")?.let { androidExt ->
+
+                androidExt as com.android.build.gradle.BaseExtension
+
+                if (androidExt.namespace == null) {
+                    androidExt.namespace = project.group.toString()
+                }
+            }
+        }
+    }
+
+    evaluationDependsOn(":app")
+}
+subprojects {
     project.evaluationDependsOn(":app")
 }
 
